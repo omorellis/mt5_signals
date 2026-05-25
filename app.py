@@ -156,5 +156,132 @@ def analyze():
         "candles":       candles,
     })
 
+@app.route("/api/filter-signals", methods=["POST"])
+def filter_signals():
+    """
+    Recebe uma lista de sinais no formato 'HH:MM,SYMBOL,DIRECTION,TF'
+    e cruza com o histórico do MT5 para calcular a taxa de acerto de cada sinal.
+    """
+    data      = request.json
+    raw_list  = data.get("signals", "")
+    days      = int(data.get("days", 30))
+    min_score = float(data.get("min_score", 60))  # % mínimo de acerto
+
+    # Parse dos sinais colados
+    parsed_signals = []
+    for line in raw_list.strip().splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        parts = [p.strip() for p in line.split(",")]
+        if len(parts) != 4:
+            continue
+        hour_str, symbol, direction, tf_str = parts
+        direction = direction.upper()
+        tf_str    = tf_str.upper()
+        if direction not in ("CALL", "PUT"):
+            continue
+        if tf_str not in TIMEFRAME_MAP:
+            continue
+        parsed_signals.append({
+            "hour":      hour_str,   # "10:10"
+            "symbol":    symbol.upper(),
+            "direction": direction,
+            "timeframe": tf_str,
+        })
+
+    if not parsed_signals:
+        return jsonify({"error": "Nenhum sinal válido encontrado na lista."}), 400
+
+    ok, err = init_mt5()
+    if not ok:
+        return jsonify({"error": f"MT5 init failed: {err}"}), 500
+
+    date_to   = datetime.now()
+    date_from = date_to - timedelta(days=days)
+
+    # Agrupa por (symbol, timeframe) para não buscar dados duplicados
+    combos = {}
+    for s in parsed_signals:
+        key = (s["symbol"], s["timeframe"])
+        if key not in combos:
+            combos[key] = []
+        combos[key].append(s)
+
+    results = []
+
+    for (symbol, tf_str), signals in combos.items():
+        tf = TIMEFRAME_MAP[tf_str]
+        rates = mt5.copy_rates_range(symbol, tf, date_from, date_to)
+
+        if rates is None or len(rates) == 0:
+            for s in signals:
+                results.append({**s, "error": "Sem dados históricos"})
+            continue
+
+        df = pd.DataFrame(rates)
+        df["time"]      = pd.to_datetime(df["time"], unit="s")
+        df["direction"] = df.apply(lambda r: "CALL" if r["close"] > r["open"] else "PUT", axis=1)
+        df["hhmm"]      = df["time"].dt.strftime("%H:%M")
+
+        for s in signals:
+            target_hour = s["hour"]
+            target_dir  = s["direction"]
+
+            # Filtra todas as velas naquele exato horário HH:MM
+            subset = df[df["hhmm"] == target_hour]
+            total_h = len(subset)
+
+            if total_h == 0:
+                results.append({**s, "total": 0, "hits": 0, "score": 0.0,
+                                 "status": "SEM_DADOS", "error": f"Nenhuma vela em {target_hour}"})
+                continue
+
+            hits    = int((subset["direction"] == target_dir).sum())
+            misses  = total_h - hits
+            score   = round(hits / total_h * 100, 1)
+
+            # Rating qualitativo
+            if score >= 75:
+                rating = "FORTE"
+            elif score >= 60:
+                rating = "BOM"
+            elif score >= 50:
+                rating = "NEUTRO"
+            else:
+                rating = "FRACO"
+
+            results.append({
+                "hour":      target_hour,
+                "symbol":    symbol,
+                "direction": target_dir,
+                "timeframe": tf_str,
+                "total":     total_h,
+                "hits":      hits,
+                "misses":    misses,
+                "score":     score,
+                "rating":    rating,
+                "approved":  score >= min_score,
+            })
+
+    shutdown_mt5()
+
+    # Ordena: aprovados primeiro, depois por score desc
+    results.sort(key=lambda x: (-int(x.get("approved", False)), -x.get("score", 0)))
+
+    approved  = [r for r in results if r.get("approved")]
+    rejected  = [r for r in results if not r.get("approved") and "error" not in r]
+    no_data   = [r for r in results if "error" in r]
+
+    return jsonify({
+        "days":       days,
+        "min_score":  min_score,
+        "total_in":   len(parsed_signals),
+        "approved":   approved,
+        "rejected":   rejected,
+        "no_data":    no_data,
+    })
+
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

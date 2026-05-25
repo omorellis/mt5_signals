@@ -247,14 +247,125 @@
   }
   .btn-export:hover{border-color:var(--accent);color:var(--accent)}
 
+  /* TABS */
+  .tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:28px}
+  .tab{
+    font-family:var(--mono);font-size:11px;letter-spacing:2px;
+    padding:12px 24px;cursor:pointer;color:var(--muted);
+    border-bottom:2px solid transparent;transition:.2s;background:none;border-top:none;border-left:none;border-right:none
+  }
+  .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+  .tab-content{display:none}
+  .tab-content.active{display:block}
+
+  /* FILTER PANEL */
+  .filter-panel{
+    background:var(--panel);border:1px solid var(--border);
+    padding:28px 32px;margin-bottom:24px
+  }
+  .filter-panel .panel-desc{
+    font-family:var(--mono);font-size:11px;color:var(--muted);
+    margin-bottom:20px;line-height:1.7;border-left:2px solid var(--muted);padding-left:12px
+  }
+  .filter-panel textarea{
+    width:100%;background:#060d12;border:1px solid var(--muted);
+    color:var(--green);font-family:var(--mono);font-size:12px;
+    padding:14px;outline:none;resize:vertical;min-height:160px;
+    line-height:1.8;transition:.2s
+  }
+  .filter-panel textarea:focus{border-color:var(--accent)}
+  .filter-panel textarea::placeholder{color:var(--muted)}
+
+  .filter-options{
+    display:grid;grid-template-columns:1fr 1fr auto;
+    gap:16px;align-items:end;margin-top:16px
+  }
+  .score-slider{display:flex;flex-direction:column;gap:6px}
+  .score-slider label{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:2px}
+  .score-slider input[type=range]{
+    width:100%;accent-color:var(--accent);cursor:pointer
+  }
+  .score-value{font-family:var(--mono);font-size:18px;color:var(--accent)}
+
+  /* FILTER RESULTS */
+  #filter-results{display:none;margin-top:24px}
+  .filter-summary{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px
+  }
+  .fscard{
+    background:#060d12;border:1px solid var(--border);
+    padding:16px 20px;text-align:center
+  }
+  .fscard .fsval{font-family:var(--mono);font-size:26px;font-weight:700}
+  .fscard .fslbl{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:2px;margin-top:4px}
+  .fscard.ok  .fsval{color:var(--green)}
+  .fscard.bad .fsval{color:var(--red)}
+  .fscard.neu .fsval{color:var(--accent)}
+
+  .signal-card{
+    border:1px solid var(--border);padding:16px 20px;margin-bottom:10px;
+    display:grid;grid-template-columns:auto auto auto 1fr auto auto;
+    align-items:center;gap:16px;transition:.2s;position:relative;overflow:hidden
+  }
+  .signal-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+  .signal-card.approved::before{background:var(--green);box-shadow:0 0 8px var(--green)}
+  .signal-card.rejected::before{background:var(--red)}
+  .signal-card.nodata::before{background:var(--muted)}
+
+  .signal-card .sc-time{font-family:var(--mono);font-size:16px;color:var(--accent)}
+  .signal-card .sc-sym{font-family:var(--mono);font-size:12px;color:var(--text)}
+  .signal-card .sc-tf{font-family:var(--mono);font-size:10px;color:var(--muted)}
+
+  .score-ring{
+    width:52px;height:52px;border-radius:50%;
+    display:grid;place-items:center;
+    font-family:var(--mono);font-size:13px;font-weight:700;
+    border:2px solid
+  }
+  .score-ring.forte{border-color:var(--green);color:var(--green);background:rgba(0,255,136,.07)}
+  .score-ring.bom  {border-color:#ffe066;   color:#ffe066;   background:rgba(255,224,102,.07)}
+  .score-ring.neutro{border-color:var(--muted);color:var(--muted);background:transparent}
+  .score-ring.fraco{border-color:var(--red); color:var(--red); background:rgba(255,60,92,.07)}
+
+  .sc-bar-wrap{flex:1}
+  .sc-bar{height:6px;background:var(--border);overflow:hidden}
+  .sc-bar-fill{height:100%;transition:width .6s ease}
+  .sc-bar-fill.approved{background:var(--green)}
+  .sc-bar-fill.rejected{background:var(--red)}
+  .sc-stats{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:4px}
+
+  .rating-badge{
+    font-family:var(--mono);font-size:9px;letter-spacing:1px;
+    padding:3px 8px;border:1px solid
+  }
+  .rating-badge.FORTE {border-color:var(--green);color:var(--green)}
+  .rating-badge.BOM   {border-color:#ffe066;   color:#ffe066}
+  .rating-badge.NEUTRO{border-color:var(--muted);color:var(--muted)}
+  .rating-badge.FRACO {border-color:var(--red); color:var(--red)}
+
+  .section-divider{
+    font-family:var(--mono);font-size:10px;color:var(--muted);
+    letter-spacing:3px;padding:12px 0 8px;
+    border-bottom:1px solid var(--border);margin-bottom:12px
+  }
+
+  #filter-loading{
+    display:none;text-align:center;padding:40px;
+    font-family:var(--mono);color:var(--accent);letter-spacing:3px;font-size:12px
+  }
+
   @media(max-width:900px){
     .form-panel{grid-template-columns:1fr 1fr}
     .two-col{grid-template-columns:1fr}
+    .filter-options{grid-template-columns:1fr 1fr}
+    .filter-summary{grid-template-columns:1fr 1fr 1fr}
+    .signal-card{grid-template-columns:auto auto 1fr auto}
     main{padding:16px}
   }
   @media(max-width:600px){
     .form-panel{grid-template-columns:1fr}
     header{padding:14px 16px}
+    .signal-card{grid-template-columns:1fr 1fr;gap:10px}
   }
 </style>
 </head>
@@ -272,6 +383,15 @@
 </header>
 
 <main>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('analyzer',this)">▶ ANALISADOR MT5</button>
+    <button class="tab"        onclick="switchTab('filter',this)">⬡ FILTRO DE SINAIS</button>
+  </div>
+
+  <!-- TAB: ANALISADOR -->
+  <div class="tab-content active" id="tab-analyzer">
 
   <!-- FORM -->
   <div class="form-panel">
@@ -418,6 +538,95 @@
     </div>
 
   </div><!-- /results -->
+
+  </div><!-- /tab-analyzer -->
+
+  <!-- TAB: FILTRO DE SINAIS -->
+  <div class="tab-content" id="tab-filter">
+
+    <div class="filter-panel">
+      <div class="panel-desc">
+        Cole abaixo uma lista de sinais no formato <span style="color:var(--accent)">HH:MM,SIMBOLO,DIREÇÃO,TIMEFRAME</span><br/>
+        O sistema vai cruzar cada sinal com o histórico do MT5 e calcular a taxa de acerto real.<br/>
+        Sinais abaixo do score mínimo são reprovados automaticamente.
+      </div>
+
+      <textarea id="signals-input" placeholder="10:10,EURUSD,CALL,M5
+14:30,EURUSD,PUT,M5
+08:00,GBPUSD,CALL,M15
+..."></textarea>
+
+      <div class="filter-options">
+        <div class="field">
+          <label>DIAS DE HISTÓRICO PARA VALIDAR</label>
+          <input type="number" id="f-days" value="30" min="7" max="365"/>
+        </div>
+
+        <div class="score-slider">
+          <label>SCORE MÍNIMO DE APROVAÇÃO: <span class="score-value" id="score-display">60%</span></label>
+          <input type="range" id="f-minscore" min="50" max="95" value="60" step="5"
+                 oninput="document.getElementById('score-display').textContent=this.value+'%'"/>
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--muted)">
+            <span>50% (neutro)</span><span>70% (bom)</span><span>95% (forte)</span>
+          </div>
+        </div>
+
+        <button class="btn-analyze" onclick="filterSignals()"><span>⬡ FILTRAR</span></button>
+      </div>
+    </div>
+
+    <!-- Filter loading -->
+    <div id="filter-loading">
+      <div class="spinner"></div>
+      VALIDANDO SINAIS NO HISTÓRICO MT5...
+    </div>
+
+    <!-- Filter error -->
+    <div id="filter-error" style="display:none;background:rgba(255,60,92,.08);border:1px solid rgba(255,60,92,.3);padding:20px 24px;font-family:var(--mono);font-size:13px;color:var(--red);margin-bottom:20px"></div>
+
+    <!-- Filter results -->
+    <div id="filter-results">
+
+      <!-- Summary cards -->
+      <div class="filter-summary">
+        <div class="fscard ok">
+          <div class="fsval" id="fr-approved">-</div>
+          <div class="fslbl">✅ APROVADOS</div>
+        </div>
+        <div class="fscard bad">
+          <div class="fsval" id="fr-rejected">-</div>
+          <div class="fslbl">❌ REPROVADOS</div>
+        </div>
+        <div class="fscard neu">
+          <div class="fsval" id="fr-total">-</div>
+          <div class="fslbl">TOTAL ANALISADOS</div>
+        </div>
+      </div>
+
+      <!-- Export filter -->
+      <div class="export-bar">
+        <button class="btn-export" onclick="exportFilterCSV()">⬇ EXPORTAR APROVADOS CSV</button>
+        <button class="btn-export" onclick="copyFilterReport()">⎘ COPIAR APROVADOS</button>
+      </div>
+
+      <!-- Approved signals -->
+      <div class="section-divider">// SINAIS APROVADOS</div>
+      <div id="fr-approved-list"></div>
+
+      <!-- Rejected signals -->
+      <div class="section-divider" style="margin-top:24px">// SINAIS REPROVADOS</div>
+      <div id="fr-rejected-list"></div>
+
+      <!-- No data signals -->
+      <div id="fr-nodata-wrap" style="display:none">
+        <div class="section-divider" style="margin-top:24px">// SEM DADOS HISTÓRICOS</div>
+        <div id="fr-nodata-list"></div>
+      </div>
+
+    </div><!-- /filter-results -->
+
+  </div><!-- /tab-filter -->
+
 </main>
 
 <script>
@@ -620,6 +829,151 @@
 
   // Enter key
   document.addEventListener('keydown', e => { if(e.key==='Enter') analyze(); });
+
+  // ── TABS ──────────────────────────────────────────
+  function switchTab(tab, btn){
+    document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+tab).classList.add('active');
+  }
+
+  // ── FILTER SIGNALS ────────────────────────────────
+  let filterData = null;
+
+  function filterSignals(){
+    const signals  = document.getElementById('signals-input').value.trim();
+    const days     = document.getElementById('f-days').value;
+    const minScore = document.getElementById('f-minscore').value;
+
+    if(!signals){
+      showFilterError('Cole pelo menos um sinal na área de texto.');
+      return;
+    }
+
+    document.getElementById('filter-error').style.display='none';
+    document.getElementById('filter-results').style.display='none';
+    document.getElementById('filter-loading').style.display='block';
+
+    fetch('/api/filter-signals',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({signals, days:parseInt(days), min_score:parseFloat(minScore)})
+    })
+    .then(r=>r.json())
+    .then(d=>{
+      document.getElementById('filter-loading').style.display='none';
+      if(d.error){ showFilterError(d.error); return; }
+      filterData = d;
+      renderFilterResults(d);
+    })
+    .catch(()=>{
+      document.getElementById('filter-loading').style.display='none';
+      showFilterError('Falha na conexão com o servidor Flask.');
+    });
+  }
+
+  function showFilterError(msg){
+    const el = document.getElementById('filter-error');
+    el.style.display='block';
+    el.textContent = '// ERROR: '+msg;
+  }
+
+  function renderFilterResults(d){
+    document.getElementById('fr-approved').textContent = d.approved.length;
+    document.getElementById('fr-rejected').textContent = d.rejected.length;
+    document.getElementById('fr-total').textContent    = d.total_in;
+
+    renderSignalCards('fr-approved-list', d.approved, 'approved');
+    renderSignalCards('fr-rejected-list', d.rejected, 'rejected');
+
+    const nd = document.getElementById('fr-nodata-wrap');
+    if(d.no_data && d.no_data.length>0){
+      nd.style.display='block';
+      renderSignalCards('fr-nodata-list', d.no_data, 'nodata');
+    } else {
+      nd.style.display='none';
+    }
+
+    document.getElementById('filter-results').style.display='block';
+
+    // Animate bars after render
+    setTimeout(()=>{
+      document.querySelectorAll('.sc-bar-fill[data-pct]').forEach(el=>{
+        el.style.width = el.dataset.pct+'%';
+      });
+    }, 100);
+  }
+
+  function renderSignalCards(containerId, signals, type){
+    const container = document.getElementById(containerId);
+    if(!signals || signals.length===0){
+      container.innerHTML='<div style="font-family:var(--mono);font-size:11px;color:var(--muted);padding:12px 0">Nenhum sinal nessa categoria.</div>';
+      return;
+    }
+
+    container.innerHTML = signals.map(s=>{
+      if(type==='nodata'){
+        return `
+          <div class="signal-card nodata" style="grid-template-columns:auto auto 1fr">
+            <span class="sc-time">${s.hour}</span>
+            <span class="sc-sym">${s.symbol} <span class="sc-tf">${s.timeframe}</span></span>
+            <span style="font-family:var(--mono);font-size:10px;color:var(--muted);text-align:right">${s.error||'Sem dados'}</span>
+          </div>`;
+      }
+
+      const ratingLow = (s.rating||'NEUTRO').toLowerCase();
+      const dirClass  = s.direction==='CALL'?'call':'put';
+      const pct       = s.score||0;
+      const barClass  = type==='approved'?'approved':'rejected';
+
+      return `
+        <div class="signal-card ${type}">
+          <span class="sc-time">${s.hour}</span>
+          <div>
+            <div class="sc-sym">${s.symbol}</div>
+            <div class="sc-tf">${s.timeframe}</div>
+          </div>
+          <span class="tag ${dirClass}">${s.direction}</span>
+          <div class="sc-bar-wrap">
+            <div class="sc-bar">
+              <div class="sc-bar-fill ${barClass}" data-pct="${pct}" style="width:0%"></div>
+            </div>
+            <div class="sc-stats">${s.hits} acertos de ${s.total} velas históricas</div>
+          </div>
+          <div class="score-ring ${ratingLow}">${pct}%</div>
+          <span class="rating-badge ${s.rating}">${s.rating}</span>
+        </div>`;
+    }).join('');
+  }
+
+  function exportFilterCSV(){
+    if(!filterData) return;
+    const rows=[['HORA','SIMBOLO','DIRECAO','TIMEFRAME','ACERTOS','TOTAL','SCORE_PCT','RATING','STATUS']];
+    [...filterData.approved,...filterData.rejected].forEach(s=>{
+      rows.push([s.hour,s.symbol,s.direction,s.timeframe,s.hits,s.total,s.score,s.rating,s.approved?'APROVADO':'REPROVADO']);
+    });
+    const csv=rows.map(r=>r.join(',')).join('\n');
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+    a.download='sinais_filtrados.csv';
+    a.click();
+  }
+
+  function copyFilterReport(){
+    if(!filterData) return;
+    let text='=== SINAIS APROVADOS ===\n';
+    filterData.approved.forEach(s=>{
+      text+=`${s.hour},${s.symbol},${s.direction},${s.timeframe} | Score: ${s.score}% (${s.rating}) | ${s.hits}/${s.total} acertos\n`;
+    });
+    navigator.clipboard.writeText(text).then(()=>{
+      const btn=event.target;
+      const orig=btn.textContent;
+      btn.textContent='✓ COPIADO!';
+      setTimeout(()=>btn.textContent=orig,2000);
+    });
+  }
+
 </script>
 </body>
 </html>
