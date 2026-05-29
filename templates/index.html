@@ -48,6 +48,39 @@
   }
   .logo-text{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:2px;line-height:1.3}
   .logo-sub{font-size:10px;color:var(--muted);letter-spacing:3px}
+  .btn-shutdown{
+    background:transparent;border:1px solid rgba(255,60,92,.4);color:rgba(255,60,92,.7);
+    font-family:var(--mono);font-size:10px;letter-spacing:2px;
+    padding:6px 14px;cursor:pointer;transition:.2s
+  }
+  .btn-shutdown:hover{border-color:var(--red);color:var(--red);box-shadow:0 0 10px rgba(255,60,92,.2)}
+
+  .shutdown-modal{
+    display:none;position:fixed;inset:0;z-index:999;
+    background:rgba(5,10,14,.85);backdrop-filter:blur(4px);
+    align-items:center;justify-content:center
+  }
+  .shutdown-modal.open{display:flex}
+  .shutdown-box{
+    background:#0b1219;border:1px solid rgba(255,60,92,.4);
+    padding:36px 40px;text-align:center;max-width:340px;width:90%
+  }
+  .shutdown-box h2{font-family:var(--mono);font-size:14px;color:var(--red);letter-spacing:2px;margin-bottom:10px}
+  .shutdown-box p{font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:24px}
+  .shutdown-actions{display:flex;gap:12px;justify-content:center}
+  .btn-confirm{
+    background:rgba(255,60,92,.1);border:1px solid var(--red);color:var(--red);
+    font-family:var(--mono);font-size:11px;letter-spacing:1px;
+    padding:8px 20px;cursor:pointer;transition:.2s
+  }
+  .btn-confirm:hover{background:rgba(255,60,92,.2)}
+  .btn-cancel{
+    background:transparent;border:1px solid var(--muted);color:var(--muted);
+    font-family:var(--mono);font-size:11px;letter-spacing:1px;
+    padding:8px 20px;cursor:pointer;transition:.2s
+  }
+  .btn-cancel:hover{border-color:var(--text);color:var(--text)}
+
   .status-dot{
     width:8px;height:8px;border-radius:50%;background:var(--accent);
     box-shadow:0 0 10px var(--accent);animation:pulse 2s infinite
@@ -258,6 +291,89 @@
   .tab-content{display:none}
   .tab-content.active{display:block}
 
+  /* SEQUENCE & CONFLUENCE */
+  .sec-panel{background:var(--panel);border:1px solid var(--border);margin-bottom:24px;overflow:hidden}
+  .seq-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12px}
+  .seq-table th{padding:8px 14px;text-align:left;border-bottom:1px solid var(--border);color:var(--muted);font-weight:400;font-size:10px;letter-spacing:1px}
+  .seq-table td{padding:8px 14px;border-bottom:1px solid rgba(15,37,53,.4)}
+  .seq-table tr:hover td{background:rgba(0,255,224,.02)}
+  .conf-card{
+    background:#060d12;border:1px solid var(--border);padding:12px 16px;
+    display:flex;align-items:center;gap:12px;transition:.15s
+  }
+  .conf-card:hover{border-color:var(--muted)}
+  .conf-info{flex:1}
+  .conf-label{font-family:var(--mono);font-size:13px;color:var(--accent)}
+  .conf-sub{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px}
+  .conf-score{font-family:var(--mono);font-size:18px;font-weight:700;text-align:right}
+  .consistency-bar{height:4px;background:var(--border);margin-top:4px;overflow:hidden}
+  .consistency-fill{height:100%;background:var(--accent);transition:width .6s}
+
+  /* RECOMMENDED SIGNALS */
+  .rec-panel{
+    background:var(--panel);border:1px solid var(--border);
+    margin-bottom:24px;overflow:hidden
+  }
+  .rec-header{
+    padding:16px 24px;border-bottom:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px
+  }
+  .rec-title{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:2px}
+  .rec-title::before{content:'// ';color:var(--muted)}
+  .rec-subtitle{font-family:var(--mono);font-size:10px;color:var(--muted)}
+  .rec-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .rec-min-score{
+    display:flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:10px;color:var(--muted)
+  }
+  .rec-min-score select{
+    background:#060d12;border:1px solid var(--muted);color:var(--text);
+    font-family:var(--mono);font-size:11px;padding:4px 8px;outline:none
+  }
+  .rec-min-score select:focus{border-color:var(--accent)}
+
+  .rec-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:1px;background:var(--border)
+  }
+  .rec-card{
+    background:var(--panel);padding:14px 18px;
+    display:flex;align-items:center;gap:12px;
+    transition:.15s;cursor:default;position:relative
+  }
+  .rec-card:hover{background:#0d1b25}
+  .rec-rank{
+    font-family:var(--mono);font-size:11px;color:var(--muted);
+    width:22px;text-align:center;flex-shrink:0
+  }
+  .rec-info{flex:1;min-width:0}
+  .rec-time{font-family:var(--mono);font-size:15px;color:var(--accent);line-height:1}
+  .rec-dir{font-family:var(--mono);font-size:10px;margin-top:3px}
+  .rec-dir.call{color:var(--green)}
+  .rec-dir.put {color:var(--red)}
+  .rec-score-wrap{text-align:right;flex-shrink:0}
+  .rec-score{font-family:var(--mono);font-size:16px;font-weight:700}
+  .rec-badge{font-family:var(--mono);font-size:8px;letter-spacing:1px;margin-top:2px}
+
+  .rec-footer{
+    padding:14px 24px;border-top:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px
+  }
+  .rec-count{font-family:var(--mono);font-size:10px;color:var(--muted)}
+  .btn-copy-rec{
+    background:rgba(0,255,224,.08);border:1px solid var(--accent);color:var(--accent);
+    font-family:var(--mono);font-size:11px;letter-spacing:2px;
+    padding:8px 22px;cursor:pointer;transition:.2s
+  }
+  .btn-copy-rec:hover{background:rgba(0,255,224,.15)}
+  .btn-copy-rec.copied{background:rgba(0,255,136,.1);border-color:var(--green);color:var(--green)}
+
+  .rec-empty{
+    padding:32px;text-align:center;
+    font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:2px
+  }
+
   /* FILTER PANEL */
   .filter-panel{
     background:var(--panel);border:1px solid var(--border);
@@ -379,8 +495,23 @@
       <div class="logo-sub">PROBABILISTIC CANDLE REPORT</div>
     </div>
   </div>
-  <div class="status-dot" title="Sistema online"></div>
+  <div style="display:flex;align-items:center;gap:16px">
+    <div class="status-dot" title="Sistema online"></div>
+    <button class="btn-shutdown" onclick="confirmShutdown()">⏻ ENCERRAR</button>
+  </div>
 </header>
+
+<!-- SHUTDOWN MODAL -->
+<div class="shutdown-modal" id="shutdown-modal">
+  <div class="shutdown-box">
+    <h2>⏻ ENCERRAR SISTEMA</h2>
+    <p>Isso vai fechar o servidor Flask e encerrar o programa completamente.</p>
+    <div class="shutdown-actions">
+      <button class="btn-cancel" onclick="closeModal()">CANCELAR</button>
+      <button class="btn-confirm" onclick="doShutdown()">ENCERRAR</button>
+    </div>
+  </div>
+</div>
 
 <main>
 
@@ -415,6 +546,10 @@
     <div class="field">
       <label>DIAS ANALISADOS</label>
       <input type="number" id="days" value="10" min="1" max="365" placeholder="10"/>
+    </div>
+    <div class="field">
+      <label>CORPO MÍN. % <span style="color:var(--muted);font-size:9px">(0=desativado)</span></label>
+      <input type="number" id="min-body-pct" value="0" min="0" max="80" step="5" placeholder="0"/>
     </div>
     <button class="btn-analyze" onclick="analyze()"><span>▶ ANALISAR</span></button>
   </div>
@@ -486,6 +621,8 @@
                 <th>CALL</th>
                 <th>PUT</th>
                 <th>VIÉS</th>
+                <th>SCORE ⬡</th>
+                <th>RSI</th>
                 <th>DIST.</th>
               </tr>
             </thead>
@@ -502,6 +639,90 @@
 
     </div>
 
+    <!-- SEQUENCE ANALYSIS -->
+    <div class="sec-panel">
+      <div class="panel-header">ANÁLISE DE SEQUÊNCIAS — APÓS N VELAS CONSECUTIVAS</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)">
+        <div style="background:var(--panel)">
+          <div style="padding:8px 14px;font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:1px;border-bottom:1px solid var(--border)">APÓS SEQUÊNCIA CALL</div>
+          <div style="max-height:220px;overflow-y:auto">
+            <table class="seq-table"><thead><tr><th>SEQUÊNCIA</th><th>PRÓX. PUT</th><th>PRÓX. CALL</th><th>AMOSTRAS</th></tr></thead>
+            <tbody id="seq-call-body"></tbody></table>
+          </div>
+        </div>
+        <div style="background:var(--panel)">
+          <div style="padding:8px 14px;font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:1px;border-bottom:1px solid var(--border)">APÓS SEQUÊNCIA PUT</div>
+          <div style="max-height:220px;overflow-y:auto">
+            <table class="seq-table"><thead><tr><th>SEQUÊNCIA</th><th>PRÓX. CALL</th><th>PRÓX. PUT</th><th>AMOSTRAS</th></tr></thead>
+            <tbody id="seq-put-body"></tbody></table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONFLUENCE hora x dia -->
+    <div class="sec-panel">
+      <div class="panel-header" style="justify-content:space-between">
+        CONFLUÊNCIA HORA × DIA DA SEMANA — TOP 20
+        <span style="font-size:10px;color:var(--muted);letter-spacing:1px">cruzamento mais preciso para binárias</span>
+      </div>
+      <div style="padding:16px 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px" id="confluence-grid"></div>
+    </div>
+
+    <!-- WEEKLY CONSISTENCY -->
+    <div class="sec-panel">
+      <div class="panel-header">CONSISTÊNCIA SEMANAL — TOP 15 HORÁRIOS</div>
+      <div style="max-height:320px;overflow-y:auto">
+        <table class="seq-table">
+          <thead><tr><th>HORA</th><th>VIÉS</th><th>CONSISTÊNCIA</th><th>SEMANAS</th><th>SCORE ⬡</th><th>BARRA</th></tr></thead>
+          <tbody id="consistency-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- WEEKDAY ANALYSIS -->
+    <div class="panel" style="margin-bottom:24px">
+      <div class="panel-header">ANÁLISE POR DIA DA SEMANA</div>
+      <div id="weekday-grid" style="padding:20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px"></div>
+    </div>
+
+    <!-- RECOMMENDED SIGNALS -->
+    <div class="rec-panel" id="rec-panel">
+      <div class="rec-header">
+        <div>
+          <div class="rec-title">SINAIS RECOMENDADOS</div>
+          <div class="rec-subtitle" id="rec-subtitle">Top horários com maior score composto</div>
+        </div>
+        <div class="rec-actions">
+          <div class="rec-min-score">
+            SCORE MÍN.
+            <select id="rec-min-score" onchange="renderRecommended()">
+              <option value="50">50%+</option>
+              <option value="60" selected>60%+</option>
+              <option value="70">70%+</option>
+              <option value="75">75%+</option>
+            </select>
+          </div>
+          <div class="rec-min-score">
+            TOP
+            <select id="rec-limit" onchange="renderRecommended()">
+              <option value="10">10</option>
+              <option value="20" selected>20</option>
+              <option value="30">30</option>
+              <option value="50">50</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="rec-grid" id="rec-grid"></div>
+      <div class="rec-footer">
+        <span class="rec-count" id="rec-count"></span>
+        <button class="btn-copy-rec" id="btn-copy-rec" onclick="copyRecommended()">
+          ⎘ COPIAR LISTA COMPLETA
+        </button>
+      </div>
+    </div>
+
     <!-- EXPORT -->
     <div class="export-bar">
       <button class="btn-export" onclick="exportCSV()">⬇ EXPORTAR CSV</button>
@@ -514,7 +735,7 @@
         <button class="filter-btn active all"   onclick="setFilter('all',this)">TODAS <span class="candle-count" id="cnt-all"></span></button>
         <button class="filter-btn green"         onclick="setFilter('call',this)">▲ CALL <span class="candle-count" id="cnt-call"></span></button>
         <button class="filter-btn red"           onclick="setFilter('put',this)">▼ PUT  <span class="candle-count" id="cnt-put"></span></button>
-        <input  class="search-input" type="text" placeholder="🔍 filtrar hora..." id="search-hour" oninput="renderTable()"/>
+        <input  class="search-input" type="text" placeholder="🔍 filtrar hora ou dia..." id="search-hour" oninput="renderTable()"/>
       </div>
       <div class="ctable-wrap">
         <table class="ctable">
@@ -522,14 +743,17 @@
             <tr>
               <th>#</th>
               <th>DATA</th>
+              <th>DIA</th>
               <th>HORA</th>
               <th>SÍMBOLO</th>
               <th>SINAL</th>
-              <th>TIMEFRAME</th>
+              <th>TF</th>
               <th>ABERTURA</th>
               <th>FECHAMENTO</th>
               <th>VARIAÇÃO</th>
-              <th>CORPO %</th>
+              <th>RSI</th>
+              <th>VOL×</th>
+              <th>EMA</th>
             </tr>
           </thead>
           <tbody id="candle-body"></tbody>
@@ -655,10 +879,11 @@
     document.getElementById('results').style.display='none';
     document.getElementById('loading').style.display='block';
 
+    const minBodyPct = parseFloat(document.getElementById('min-body-pct').value||0);
     fetch('/api/analyze',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({symbol,timeframe,days:parseInt(days)})
+      body: JSON.stringify({symbol,timeframe,days:parseInt(days),min_body_pct:minBodyPct})
     })
     .then(r=>r.json())
     .then(d=>{
@@ -679,6 +904,128 @@
       eb.textContent = 'Falha na conexão com o servidor. Verifique se o Flask está rodando.';
     });
   }
+
+  // ── RECOMMENDED SIGNALS ──────────────────────────────
+  let recommendedSource = []; // gerado após cada análise
+
+  function buildRecommended(d){
+    // Expande hourly_stats: para cada hora, gera um sinal com a direção do viés
+    // e enriquece com dados de dia da semana
+    const symbol = d.symbol;
+    const tf     = d.timeframe;
+    const signals = [];
+
+    (d.hourly_stats||[]).forEach(h=>{
+      if(h.total < 3) return; // mínimo 3 amostras
+
+      const rsi = h.rsi_avg||50;
+
+      // Calcula score para cada direção separadamente
+      const calcComp = (dir) => {
+        const hist  = dir==='CALL' ? h.call_pct : h.put_pct;
+        const rsiSc = dir==='CALL'
+          ? Math.max(0,Math.min(100,(70-rsi)/20*100))
+          : Math.max(0,Math.min(100,(rsi-30)/20*100));
+        const emaSc = dir==='CALL' ? (h.ema_aligned||50) : (100-(h.ema_aligned||50));
+        const volSc = Math.min(100,(h.vol_avg||1)*50);
+        return { comp: Math.round(hist*0.40 + rsiSc*0.25 + emaSc*0.20 + volSc*0.15), hist };
+      };
+
+      const callResult = calcComp('CALL');
+      const putResult  = calcComp('PUT');
+
+      // Só a direção vencedora entra na lista
+      const winner = callResult.comp >= putResult.comp ? 'CALL' : 'PUT';
+      const best   = winner === 'CALL' ? callResult : putResult;
+
+      signals.push({
+        hour:       h.hour,
+        symbol,
+        direction:  winner,
+        timeframe:  tf,
+        comp_score: best.comp,
+        hist_score: best.hist,
+        rsi_avg:    rsi,
+        vol_avg:    h.vol_avg||1,
+        total:      h.total,
+      });
+    });
+
+    // Ordena por score desc para rankear, depois por hora ao copiar
+    signals.sort((a,b)=>b.comp_score-a.comp_score);
+    recommendedSource = signals;
+    renderRecommended();
+  }
+
+  function renderRecommended(){
+    const minScore = parseInt(document.getElementById('rec-min-score').value||60);
+    const limit    = parseInt(document.getElementById('rec-limit').value||20);
+
+    const filtered = recommendedSource
+      .filter(s=>s.comp_score>=minScore)
+      .slice(0,limit);
+
+    const grid = document.getElementById('rec-grid');
+    const count = document.getElementById('rec-count');
+    const sub   = document.getElementById('rec-subtitle');
+
+    sub.textContent = `Top ${limit} horários com score composto ≥ ${minScore}% — ${currentData?.symbol||''} ${currentData?.timeframe||''}`;
+
+    if(filtered.length===0){
+      grid.innerHTML='<div class="rec-empty" style="grid-column:1/-1">Nenhum sinal acima de '+minScore+'% encontrado. Tente reduzir o score mínimo.</div>';
+      count.textContent='0 sinais';
+      return;
+    }
+
+    grid.innerHTML = filtered.map((s,i)=>{
+      const sc     = s.comp_score;
+      const color  = scoreColor(sc);
+      const dirCls = s.direction==='CALL'?'call':'put';
+      const arrow  = s.direction==='CALL'?'▲':'▼';
+      const rating = sc>=75?'FORTE':sc>=60?'BOM':sc>=50?'NEUTRO':'FRACO';
+      const ratingColor = sc>=75?'var(--green)':sc>=60?'#ffe066':'var(--muted)';
+      return `
+        <div class="rec-card" title="RSI médio: ${s.rsi_avg.toFixed(0)} | Vol: ${s.vol_avg.toFixed(2)}x | ${s.total} amostras">
+          <div class="rec-rank">#${i+1}</div>
+          <div class="rec-info">
+            <div class="rec-time">${s.hour}</div>
+            <div class="rec-dir ${dirCls}">${arrow} ${s.direction} &nbsp;·&nbsp; ${s.hist_score.toFixed(0)}% hist.</div>
+          </div>
+          <div class="rec-score-wrap">
+            <div class="rec-score" style="color:${color}">${sc}%</div>
+            <div class="rec-badge" style="color:${ratingColor}">${rating}</div>
+          </div>
+        </div>`;
+    }).join('');
+
+    count.textContent = `${filtered.length} sinais gerados — passe o mouse em cada card para ver detalhes`;
+  }
+
+  function copyRecommended(){
+    const minScore = parseInt(document.getElementById('rec-min-score').value||60);
+    const limit    = parseInt(document.getElementById('rec-limit').value||20);
+    const filtered = recommendedSource.filter(s=>s.comp_score>=minScore).slice(0,limit);
+
+    if(!filtered.length) return;
+
+    const sorted = [...filtered].sort((a,b)=>a.hour.localeCompare(b.hour));
+    const lines = sorted.map(s=>`${s.hour},${s.symbol},${s.direction},${s.timeframe}`).join('\n');
+    const header = `=== SINAIS RECOMENDADOS — ${currentData?.symbol} ${currentData?.timeframe} ===\n`
+                 + `Score mínimo: ${minScore}% | Gerado em: ${new Date().toLocaleString('pt-BR')}\n\n`;
+
+    navigator.clipboard.writeText(header+lines).then(()=>{
+      const btn = document.getElementById('btn-copy-rec');
+      btn.textContent='✓ COPIADO!';
+      btn.classList.add('copied');
+      setTimeout(()=>{
+        btn.textContent='⎘ COPIAR LISTA COMPLETA';
+        btn.classList.remove('copied');
+      }, 2500);
+    });
+  }
+
+  function scoreColor(s){ return s>=75?'var(--green)':s>=60?'#ffe066':s>=50?'var(--muted)':'var(--red)'; }
+  function rsiColor(r){ return r>=70?'var(--red)':r<=30?'var(--green)':'var(--muted)'; }
 
   function renderResults(d){
     document.getElementById('r-symbol').textContent = d.symbol;
@@ -701,44 +1048,63 @@
       document.getElementById('bar-red').textContent   = d.red_pct>8 ? d.red_pct+'%':'';
     },100);
 
-    // Hourly table
+    // Hourly table — agora com Score Composto e RSI
     const hb = document.getElementById('hourly-body');
     hb.innerHTML='';
     d.hourly_stats.forEach(h=>{
       const tr = document.createElement('tr');
       const biasClass = h.bias==='CALL'?'bias-call':'bias-put';
+      const sc = h.comp_score||0;
       tr.innerHTML=`
         <td>${h.hour}</td>
         <td class="bias-call">${h.calls}</td>
         <td class="bias-put">${h.puts}</td>
         <td class="${biasClass}">${h.bias}</td>
-        <td>
-          <div class="mini-bar">
-            <div class="mini-g" style="width:${h.call_pct}%"></div>
-          </div>
-        </td>`;
+        <td style="color:${scoreColor(sc)};font-weight:700">${sc}%</td>
+        <td style="color:${rsiColor(h.rsi_avg||50)}">${(h.rsi_avg||50).toFixed(0)}</td>
+        <td><div class="mini-bar"><div class="mini-g" style="width:${h.call_pct}%"></div></div></td>`;
       hb.appendChild(tr);
     });
 
-    // Top hours
-    const sorted = [...d.hourly_stats].sort((a,b)=>{
-      const aScore = a.bias==='CALL'?a.call_pct:a.put_pct;
-      const bScore = b.bias==='CALL'?b.call_pct:b.put_pct;
-      return bScore-aScore;
-    }).slice(0,8);
-
+    // Top hours — agora ordenado por Score Composto
+    const sorted = [...d.hourly_stats].sort((a,b)=>(b.comp_score||0)-(a.comp_score||0)).slice(0,8);
     const th = document.getElementById('top-hours');
     th.innerHTML = sorted.map(h=>{
-      const pct   = h.bias==='CALL'?h.call_pct:h.put_pct;
-      const color = h.bias==='CALL'?'var(--green)':'var(--red)';
+      const sc    = h.comp_score||0;
+      const color = scoreColor(sc);
       const arrow = h.bias==='CALL'?'▲':'▼';
+      const dirColor = h.bias==='CALL'?'var(--green)':'var(--red)';
       return `
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
           <span style="font-family:var(--mono);font-size:12px;color:var(--accent);width:42px">${h.hour}</span>
+          <span class="tag ${h.bias.toLowerCase()}" style="font-size:9px">${arrow} ${h.bias}</span>
           <div style="flex:1;height:16px;background:#060d12;border:1px solid var(--border);overflow:hidden">
-            <div style="width:${pct}%;height:100%;background:${color};opacity:.7"></div>
+            <div style="width:${sc}%;height:100%;background:${color};opacity:.7"></div>
           </div>
-          <span style="font-family:var(--mono);font-size:11px;color:${color};width:54px;text-align:right">${arrow} ${pct}%</span>
+          <span style="font-family:var(--mono);font-size:12px;color:${color};width:46px;text-align:right;font-weight:700">${sc}%</span>
+        </div>`;
+    }).join('');
+
+    // Weekday cards
+    const wg = document.getElementById('weekday-grid');
+    wg.innerHTML = (d.weekday_stats||[]).map(w=>{
+      const sc    = w.comp_score||0;
+      const color = scoreColor(sc);
+      const biasColor = w.bias==='CALL'?'var(--green)':'var(--red)';
+      const topH  = (w.top_hours||[]).slice(0,3).map(h=>
+        `<div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;margin-top:4px">
+          <span style="color:var(--accent)">${h.hour}</span>
+          <span class="tag ${h.bias.toLowerCase()}" style="font-size:8px">${h.bias}</span>
+          <span style="color:${scoreColor(h.score)}">${h.score}%</span>
+        </div>`).join('');
+      return `
+        <div style="background:#060d12;border:1px solid var(--border);padding:14px;position:relative;overflow:hidden">
+          <div style="position:absolute;top:0;left:0;bottom:0;width:3px;background:${color}"></div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1px;margin-bottom:6px">${w.name.toUpperCase()}</div>
+          <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:${color}">${sc}%</div>
+          <div style="font-family:var(--mono);font-size:10px;color:${biasColor};margin-bottom:8px">${w.bias==='CALL'?'▲':'▼'} ${w.bias} | ${w.total} velas</div>
+          <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:4px">TOP HORÁRIOS</div>
+          ${topH}
         </div>`;
     }).join('');
 
@@ -752,6 +1118,73 @@
     document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
     document.querySelector('.filter-btn.all').classList.add('active');
 
+    // Filtered out notice
+    if(d.filtered_out > 0){
+      document.getElementById('r-total').textContent = d.total_candles + ' ('+d.filtered_out+' doji removidos)';
+    }
+
+    // Sequence analysis
+    const seqCall = (d.sequence_stats||[]).filter(s=>s.direction==='CALL').slice(0,6);
+    const seqPut  = (d.sequence_stats||[]).filter(s=>s.direction==='PUT').slice(0,6);
+    const scb = document.getElementById('seq-call-body');
+    const spb = document.getElementById('seq-put-body');
+    scb.innerHTML = seqCall.map(s=>{
+      const oppColor = s.next_opposite>=60?'var(--red)':s.next_opposite>=50?'#ffe066':'var(--muted)';
+      return `<tr>
+        <td style="color:var(--green)">${s.label}</td>
+        <td style="color:${oppColor};font-weight:700">${s.next_opposite}%</td>
+        <td style="color:var(--muted)">${s.next_same}%</td>
+        <td style="color:var(--muted)">${s.total_cases}</td></tr>`;
+    }).join('') || '<tr><td colspan="4" style="color:var(--muted);padding:12px">Dados insuficientes</td></tr>';
+    spb.innerHTML = seqPut.map(s=>{
+      const oppColor = s.next_opposite>=60?'var(--green)':s.next_opposite>=50?'#ffe066':'var(--muted)';
+      return `<tr>
+        <td style="color:var(--red)">${s.label}</td>
+        <td style="color:${oppColor};font-weight:700">${s.next_opposite}%</td>
+        <td style="color:var(--muted)">${s.next_same}%</td>
+        <td style="color:var(--muted)">${s.total_cases}</td></tr>`;
+    }).join('') || '<tr><td colspan="4" style="color:var(--muted);padding:12px">Dados insuficientes</td></tr>';
+
+    // Confluence grid
+    const cg = document.getElementById('confluence-grid');
+    cg.innerHTML = (d.confluence||[]).slice(0,20).map(c=>{
+      const sc = c.comp_score||0;
+      const color = scoreColor(sc);
+      const biasColor = c.bias==='CALL'?'var(--green)':'var(--red)';
+      const arrow = c.bias==='CALL'?'▲':'▼';
+      const consColor = c.consistency>=70?'var(--green)':c.consistency>=55?'#ffe066':'var(--muted)';
+      return `<div class="conf-card">
+        <div class="conf-info">
+          <div class="conf-label">${c.day_name} ${c.hour}</div>
+          <div class="conf-sub">${c.total} amostras · ${c.weeks} sem. · consist. <span style="color:${consColor}">${c.consistency}%</span></div>
+          <div class="consistency-bar"><div class="consistency-fill" style="width:${c.consistency}%"></div></div>
+        </div>
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;color:${biasColor};text-align:right">${arrow} ${c.bias}</div>
+          <div class="conf-score" style="color:${color}">${sc}%</div>
+        </div>
+      </div>`;
+    }).join('') || '<div style="font-family:var(--mono);font-size:11px;color:var(--muted);padding:8px">Dados insuficientes — tente mais dias de histórico.</div>';
+
+    // Weekly consistency table
+    const cb = document.getElementById('consistency-body');
+    cb.innerHTML = (d.weekly_consistency||[]).slice(0,15).map(w=>{
+      const sc = w.comp_score||0;
+      const cons = w.consistency||0;
+      const color = scoreColor(sc);
+      const consColor = cons>=70?'var(--green)':cons>=55?'#ffe066':'var(--muted)';
+      const biasColor = w.bias==='CALL'?'var(--green)':'var(--red)';
+      return `<tr>
+        <td style="color:var(--accent)">${w.hour}</td>
+        <td><span class="tag ${w.bias.toLowerCase()}" style="font-size:9px">${w.bias==='CALL'?'▲':'▼'} ${w.bias}</span></td>
+        <td style="color:${consColor};font-weight:700">${cons}%</td>
+        <td style="color:var(--muted)">${w.weeks} sem.</td>
+        <td style="color:${color};font-weight:700">${sc}%</td>
+        <td><div style="width:80px;height:6px;background:var(--border);overflow:hidden"><div style="width:${cons}%;height:100%;background:${consColor}"></div></div></td>
+      </tr>`;
+    }).join('') || '<tr><td colspan="6" style="color:var(--muted);padding:12px">Dados insuficientes</td></tr>';
+
+    buildRecommended(d);
     renderTable();
     document.getElementById('results').style.display='block';
   }
@@ -766,8 +1199,8 @@
   function renderTable(){
     const search = document.getElementById('search-hour').value.toLowerCase();
     let filtered = allCandles.filter(c=>{
-      const dirOk = currentFilter==='all'||(currentFilter==='call'&&c.direction==='CALL')||(currentFilter==='put'&&c.direction==='PUT');
-      const srchOk = !search || c.hour.includes(search) || c.date.includes(search);
+      const dirOk  = currentFilter==='all'||(currentFilter==='call'&&c.direction==='CALL')||(currentFilter==='put'&&c.direction==='PUT');
+      const srchOk = !search || c.hour.includes(search) || c.date.includes(search) || (c.weekday||'').toLowerCase().includes(search);
       return dirOk && srchOk;
     });
 
@@ -777,10 +1210,14 @@
       const variation = (c.close - c.open).toFixed(5);
       const varSign   = c.direction==='CALL'?'+':'';
       const varColor  = c.direction==='CALL'?'var(--green)':'var(--red)';
+      const rsiC      = rsiColor(c.rsi||50);
+      const volC      = (c.vol_ratio||1)>=1.5?'var(--green)':(c.vol_ratio||1)<0.7?'var(--red)':'var(--muted)';
+      const emaC      = c.ema_trend==='Alta'?'var(--green)':'var(--red)';
       const tr = document.createElement('tr');
       tr.innerHTML=`
         <td style="color:var(--muted)">${i+1}</td>
         <td>${c.date}</td>
+        <td style="color:var(--muted);font-size:10px">${c.weekday||''}</td>
         <td style="color:var(--accent)">${c.hour}</td>
         <td>${currentData.symbol}</td>
         <td><span class="tag ${c.direction.toLowerCase()}">${c.direction}</span></td>
@@ -788,16 +1225,18 @@
         <td>${c.open}</td>
         <td>${c.close}</td>
         <td style="color:${varColor}">${varSign}${variation}</td>
-        <td style="color:var(--muted)">${c.body_pct}%</td>`;
+        <td style="color:${rsiC}">${c.rsi||'-'}</td>
+        <td style="color:${volC}">${(c.vol_ratio||1).toFixed(2)}x</td>
+        <td style="color:${emaC};font-size:10px">${c.ema_trend||'-'}</td>`;
       tbody.appendChild(tr);
     });
   }
 
   function exportCSV(){
     if(!currentData) return;
-    const rows = [['#','DATA','HORA','SIMBOLO','SINAL','TIMEFRAME','ABERTURA','FECHAMENTO','VARIACAO','CORPO_PCT']];
+    const rows = [['#','DATA','DIA','HORA','SIMBOLO','SINAL','TIMEFRAME','ABERTURA','FECHAMENTO','VARIACAO','RSI','VOL_RATIO','EMA_TREND']];
     allCandles.forEach((c,i)=>{
-      rows.push([i+1, c.date, c.hour, currentData.symbol, c.direction, currentData.timeframe, c.open, c.close, (c.close-c.open).toFixed(5), c.body_pct]);
+      rows.push([i+1,c.date,c.weekday,c.hour,currentData.symbol,c.direction,currentData.timeframe,c.open,c.close,(c.close-c.open).toFixed(5),c.rsi,c.vol_ratio,c.ema_trend]);
     });
     const csv = rows.map(r=>r.join(',')).join('\n');
     const blob = new Blob([csv],{type:'text/csv'});
@@ -813,11 +1252,15 @@
     let text = `=== MT5 SIGNAL REPORT ===\n`;
     text += `Símbolo: ${d.symbol} | TF: ${d.timeframe} | Período: ${d.date_from} → ${d.date_to}\n`;
     text += `Total de velas: ${d.total_candles}\n`;
-    text += `✅ CALL (verde): ${d.green_count} (${d.green_pct}%)\n`;
-    text += `🔴 PUT (vermelho): ${d.red_count} (${d.red_pct}%)\n\n`;
+    text += `✅ CALL: ${d.green_count} (${d.green_pct}%) | 🔴 PUT: ${d.red_count} (${d.red_pct}%)\n\n`;
+    if(d.weekday_stats){
+      text += `=== POR DIA DA SEMANA ===\n`;
+      d.weekday_stats.forEach(w=> text+=`${w.name}: ${w.bias} | Score: ${w.comp_score}% | ${w.total} velas\n`);
+      text += `\n`;
+    }
     text += `=== VELAS INDIVIDUAIS ===\n`;
     allCandles.forEach(c=>{
-      text += `${c.hour}, ${d.symbol}, ${c.direction}, ${d.timeframe}\n`;
+      text += `${c.date} ${c.weekday} ${c.hour}, ${d.symbol}, ${c.direction}, ${d.timeframe}, RSI:${c.rsi}, Vol:${c.vol_ratio}x\n`;
     });
     navigator.clipboard.writeText(text).then(()=>{
       const btn = event.target;
@@ -829,6 +1272,25 @@
 
   // Enter key
   document.addEventListener('keydown', e => { if(e.key==='Enter') analyze(); });
+
+  // ── SHUTDOWN ──────────────────────────────────────
+  function confirmShutdown(){
+    document.getElementById('shutdown-modal').classList.add('open');
+  }
+  function closeModal(){
+    document.getElementById('shutdown-modal').classList.remove('open');
+  }
+  function doShutdown(){
+    fetch('/api/shutdown', {method:'POST'})
+      .catch(()=>{})
+      .finally(()=>{
+        document.querySelector('.shutdown-box').innerHTML = `
+          <h2 style="color:var(--accent)">✓ ENCERRADO</h2>
+          <p style="margin:0">O servidor foi fechado.<br/>Pode fechar esta aba.</p>`;
+      });
+  }
+  // Fecha modal com ESC
+  document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
 
   // ── TABS ──────────────────────────────────────────
   function switchTab(tab, btn){
